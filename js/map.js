@@ -15,11 +15,12 @@ const apiKey = "AAPKd0aca9e07fc246f89c572149904824b5zqJMhMutQv6gAiZ2W6AMZ9yimm-8
 
 
 
-// NOAA nexrad radar layer
-const radar = L.esri.dynamicMapLayer({
-    url: 'https://nowcoast.noaa.gov/arcgis/rest/services/nowcoast/radar_meteo_imagery_nexrad_time/MapServer'
+// ArcGIS Living Atlas Weather Radar
+const radar = L.esri.imageMapLayer({
+    url: 'https://mapservices.weather.noaa.gov/eventdriven/rest/services/radar/radar_base_reflectivity_time/ImageServer',
+    opacity: 0.7,
+
 });
-// end NOAA nexrad radar
 
 // NWS moderate events layer
 const moderate = L.esri.featureLayer({
