@@ -1,5 +1,3 @@
-
-
 const gray = L.layerGroup();
 const img = L.layerGroup();
 const street = L.layerGroup();
@@ -16,10 +14,16 @@ const apiKey = "AAPKd0aca9e07fc246f89c572149904824b5zqJMhMutQv6gAiZ2W6AMZ9yimm-8
 
 
 // ArcGIS Living Atlas Weather Radar
-const radar = L.esri.imageMapLayer({
-    url: 'https://mapservices.weather.noaa.gov/eventdriven/rest/services/radar/radar_base_reflectivity_time/ImageServer',
-    opacity: 0.7,
-
+const radar = L.esri.dynamicMapLayer({
+    url: 'https://mapservices.weather.noaa.gov/eventdriven/rest/services/radar/radar_base_reflectivity/MapServer/',
+    layers: [3],
+    // Add these options
+    useCors: true,
+    f: 'image',
+    opacity: 0.6,
+    // Add error handling
+}).on('requesterror', function(e) {
+    console.log('Radar layer error:', e);
 });
 
 // NWS moderate events layer
