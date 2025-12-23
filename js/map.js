@@ -13,7 +13,7 @@ const apiKey = "AAPKd0aca9e07fc246f89c572149904824b5zqJMhMutQv6gAiZ2W6AMZ9yimm-8
 
 
 
-// ArcGIS Living Atlas Weather Radar
+//NOAA Weather Radar
 const radar = L.esri.dynamicMapLayer({
     url: 'https://mapservices.weather.noaa.gov/eventdriven/rest/services/radar/radar_base_reflectivity/MapServer/',
     layers: [3],
