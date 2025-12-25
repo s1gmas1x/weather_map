@@ -1,7 +1,7 @@
 const gray = L.layerGroup();
 const img = L.layerGroup();
 const street = L.layerGroup();
-const apiKey = "AAPKd0aca9e07fc246f89c572149904824b5zqJMhMutQv6gAiZ2W6AMZ9yimm-86BRon5zxfe0sBYDwdqxuMaSW3wbeuGJqnFzB";
+const apiKey = "ArcGisAPIkey";
   
 
 //L.esri.basemapLayer('DarkGray').addTo(gray);
@@ -120,4 +120,5 @@ const overlays = {
 };
 
 L.control.scale().addTo(map);
+
 L.control.layers(baseLayers, overlays).addTo(map);
