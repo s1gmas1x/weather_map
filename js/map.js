@@ -1,6 +1,3 @@
-const gray = L.layerGroup();
-const img = L.layerGroup();
-const street = L.layerGroup();
 const apiKey = window.APP_CONFIG?.ARCGIS_API_KEY || "";
   
 
@@ -86,27 +83,29 @@ map = L.map('mapid', {
     center: [32, -64],
     zoom: 4,
     minZoom: 3,
-    layers: [gray, radar, moderate, severe, extreme, caneError, caneCast, caneTrack],
-    maxBoundsViscosity: 1.0,
+    layers: [radar, moderate, severe, extreme, caneError, caneCast, caneTrack],
+    worldCopyJump: true
 });
 
-map.setMaxBounds([
-    [-85, -180],
-    [85, 180]
-]);
-
-
+const openStreetMap = L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+}).addTo(map);
 
 const baseLayers = {
-    "Dark gray": L.esri.Vector.vectorBasemapLayer("ArcGIS:DarkGray", { apiKey: apiKey }).addTo(map),
-    
-    Streets: L.esri.Vector.vectorBasemapLayer("ArcGIS:Streets", { apiKey: apiKey }),
-    Navigation: L.esri.Vector.vectorBasemapLayer("ArcGIS:Navigation", { apiKey: apiKey }),
-    Topographic: L.esri.Vector.vectorBasemapLayer("ArcGIS:Topographic", { apiKey: apiKey }),
-    Imagery: L.esri.Vector.vectorBasemapLayer("ArcGIS:Imagery", { apiKey: apiKey }),
-    ChartedTerritory: L.esri.Vector.vectorBasemapLayer("ArcGIS:ChartedTerritory", { apiKey: apiKey }),
-    Nova: L.esri.Vector.vectorBasemapLayer("ArcGIS:Nova", { apiKey: apiKey }),
+    "OpenStreetMap": openStreetMap
 };
+
+if (apiKey.trim()) {
+    baseLayers["Dark gray"] = L.esri.Vector.vectorBasemapLayer("ArcGIS:DarkGray", { apiKey: apiKey });
+    baseLayers["Streets"] = L.esri.Vector.vectorBasemapLayer("ArcGIS:Streets", { apiKey: apiKey });
+    baseLayers["Navigation"] = L.esri.Vector.vectorBasemapLayer("ArcGIS:Navigation", { apiKey: apiKey });
+    baseLayers["Topographic"] = L.esri.Vector.vectorBasemapLayer("ArcGIS:Topographic", { apiKey: apiKey });
+    baseLayers["Imagery"] = L.esri.Vector.vectorBasemapLayer("ArcGIS:Imagery", { apiKey: apiKey });
+    baseLayers["ChartedTerritory"] = L.esri.Vector.vectorBasemapLayer("ArcGIS:ChartedTerritory", { apiKey: apiKey });
+    baseLayers["Nova"] = L.esri.Vector.vectorBasemapLayer("ArcGIS:Nova", { apiKey: apiKey });
+} else {
+    console.warn("ARCGIS_API_KEY is empty. ArcGIS vector basemaps are disabled.");
+}
 
 const overlays = {
     'Radar': radar,
