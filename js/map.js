@@ -87,16 +87,11 @@ map = L.map('mapid', {
     worldCopyJump: true
 });
 
-const openStreetMap = L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-}).addTo(map);
-
-const baseLayers = {
-    "OpenStreetMap": openStreetMap
-};
+const baseLayers = {};
 
 if (apiKey.trim()) {
-    baseLayers["Dark gray"] = L.esri.Vector.vectorBasemapLayer("ArcGIS:DarkGray", { apiKey: apiKey });
+    const darkGray = L.esri.Vector.vectorBasemapLayer("ArcGIS:DarkGray", { apiKey: apiKey }).addTo(map);
+    baseLayers["Dark gray"] = darkGray;
     baseLayers["Streets"] = L.esri.Vector.vectorBasemapLayer("ArcGIS:Streets", { apiKey: apiKey });
     baseLayers["Navigation"] = L.esri.Vector.vectorBasemapLayer("ArcGIS:Navigation", { apiKey: apiKey });
     baseLayers["Topographic"] = L.esri.Vector.vectorBasemapLayer("ArcGIS:Topographic", { apiKey: apiKey });
