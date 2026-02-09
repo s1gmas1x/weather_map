@@ -84,18 +84,13 @@ map = L.map('mapid', {
     zoom: 4,
     minZoom: 3,
     layers: [radar, moderate, severe, extreme, caneError, caneCast, caneTrack],
-    worldCopyJump: true
+    maxBoundsViscosity: 1.0
 });
 
-// Keep the map in the primary world extent so Esri feature layers do not
-// disappear on wrapped copies while still allowing horizontal panning.
-map.on("moveend", function() {
-    const center = map.getCenter();
-    const wrappedCenter = map.wrapLatLng(center);
-    if (center.lng !== wrappedCenter.lng) {
-        map.panTo([center.lat, wrappedCenter.lng], { animate: false });
-    }
-});
+map.setMaxBounds([
+    [-85, -179.99],
+    [85, 179.99]
+]);
 
 const baseLayers = {};
 
