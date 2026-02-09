@@ -26,10 +26,8 @@ function formatDateValue(rawValue) {
 
 function warningPopupContent(feature) {
     const properties = feature?.properties || {};
-    const eventName = getFirstExisting(properties, ["EVENT", "WARN_TYPE", "prod_type", "PHENOM"]);
-    const severity = getFirstExisting(properties, ["SEVERITY", "SIG", "RISK", "COLOR"]);
-    const headline = getFirstExisting(properties, ["HEADLINE", "PROD_TYPE", "DESCRIPTION"]);
-    const area = getFirstExisting(properties, ["AREA_DESC", "COUNTY", "AREA", "NAME"]);
+    const eventName = getFirstExisting(properties, ["Event", "EVENT", "WARN_TYPE", "prod_type", "PHENOM"]);
+    const severity = getFirstExisting(properties, ["Severity", "SEVERITY", "SIG", "RISK", "COLOR"]);
     const starts = formatDateValue(getFirstExisting(properties, ["ONSET", "ISSUED", "INIT_ISS"]));
     const expires = formatDateValue(getFirstExisting(properties, ["EXPIRES", "EXPIRATION", "ENDS", "ENDS_UTC"]));
 
@@ -37,10 +35,8 @@ function warningPopupContent(feature) {
         <div>
             <strong>${eventName}</strong><br>
             <strong>Severity:</strong> ${severity}<br>
-            <strong>Headline:</strong> ${headline}<br>
-            <strong>Area:</strong> ${area}<br>
-            <strong>Starts:</strong> ${starts}<br>
-            <strong>Expires:</strong> ${expires}
+            ${starts !== "N/A" ? `<strong>Starts:</strong> ${starts}<br>` : ""}
+            ${expires !== "N/A" ? `<strong>Expires:</strong> ${expires}` : ""}
         </div>
     `;
 }
