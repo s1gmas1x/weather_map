@@ -1,4 +1,49 @@
 const apiKey = window.APP_CONFIG?.ARCGIS_API_KEY || "";
+
+function getFirstExisting(properties, keys) {
+    for (const key of keys) {
+        const value = properties[key];
+        if (value !== undefined && value !== null && String(value).trim() !== "") {
+            return String(value);
+        }
+    }
+    return "N/A";
+}
+
+function formatDateValue(rawValue) {
+    if (!rawValue) {
+        return "N/A";
+    }
+
+    const numericValue = Number(rawValue);
+    const dateValue = Number.isFinite(numericValue) ? new Date(numericValue) : new Date(rawValue);
+    if (Number.isNaN(dateValue.getTime())) {
+        return String(rawValue);
+    }
+
+    return dateValue.toLocaleString();
+}
+
+function warningPopupContent(feature) {
+    const properties = feature?.properties || {};
+    const eventName = getFirstExisting(properties, ["EVENT", "WARN_TYPE", "prod_type", "PHENOM"]);
+    const severity = getFirstExisting(properties, ["SEVERITY", "SIG", "RISK", "COLOR"]);
+    const headline = getFirstExisting(properties, ["HEADLINE", "PROD_TYPE", "DESCRIPTION"]);
+    const area = getFirstExisting(properties, ["AREA_DESC", "COUNTY", "AREA", "NAME"]);
+    const starts = formatDateValue(getFirstExisting(properties, ["ONSET", "ISSUED", "INIT_ISS"]));
+    const expires = formatDateValue(getFirstExisting(properties, ["EXPIRES", "EXPIRATION", "ENDS", "ENDS_UTC"]));
+
+    return `
+        <div>
+            <strong>${eventName}</strong><br>
+            <strong>Severity:</strong> ${severity}<br>
+            <strong>Headline:</strong> ${headline}<br>
+            <strong>Area:</strong> ${area}<br>
+            <strong>Starts:</strong> ${starts}<br>
+            <strong>Expires:</strong> ${expires}
+        </div>
+    `;
+}
   
 
 //L.esri.basemapLayer('DarkGray').addTo(gray);
@@ -30,6 +75,9 @@ const moderate = L.esri.featureLayer({
         return { color: '#6aaf00', weight: .125 };
     }
 });
+moderate.bindPopup(function(layer) {
+    return warningPopupContent(layer.feature);
+});
 
 // end moderate events
 
@@ -40,6 +88,9 @@ const severe = L.esri.featureLayer({
         return { color: '#cccc00', weight: 1 };
     }
 });
+severe.bindPopup(function(layer) {
+    return warningPopupContent(layer.feature);
+});
 // end severe events
 
     // NWS extreme events layer
@@ -48,6 +99,9 @@ const extreme = L.esri.featureLayer({
     style: function() {
         return { color: '#ff5500', weight: 2 };
     }
+});
+extreme.bindPopup(function(layer) {
+    return warningPopupContent(layer.feature);
 });
 // end extreme events
 
