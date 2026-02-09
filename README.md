@@ -38,3 +38,14 @@ This project demonstrates:
 It was intentionally kept framework-light to focus on fundamentals: data sources, rendering, and user interaction.
 
 ---
+
+## Netlify Environment Variable Setup
+
+This project expects an ArcGIS API key in `ARCGIS_API_KEY` when deployed on Netlify.
+
+1. In Netlify, open your site.
+2. Go to `Site configuration` -> `Environment variables`.
+3. Add variable name `ARCGIS_API_KEY` with your ArcGIS key as the value.
+4. Trigger a new deploy (`Deploys` -> `Trigger deploy` -> `Deploy site`).
+
+During Netlify builds, `netlify.toml` writes that value into `js/config.js`, and `js/map.js` uses it for Esri vector basemaps.

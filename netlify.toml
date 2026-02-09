@@ -1,0 +1,9 @@
+[build]
+  publish = "."
+  command = """
+cat > js/config.js <<EOC
+window.APP_CONFIG = {
+  ARCGIS_API_KEY: \"${ARCGIS_API_KEY}\"
+};
+EOC
+"""

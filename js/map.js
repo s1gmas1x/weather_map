@@ -1,7 +1,7 @@
 const gray = L.layerGroup();
 const img = L.layerGroup();
 const street = L.layerGroup();
-const apiKey = "ArcGisAPIkey";
+const apiKey = window.APP_CONFIG?.ARCGIS_API_KEY || "";
   
 
 //L.esri.basemapLayer('DarkGray').addTo(gray);
